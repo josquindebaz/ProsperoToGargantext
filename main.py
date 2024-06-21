@@ -19,6 +19,7 @@ def get_ctx_values(lines):
         "title": lines[1].strip(),
         "authors": lines[2].strip(),
         "date": lines[5].strip(),
+        "source": lines[6].strip(),
     }
 
     return values
@@ -31,8 +32,8 @@ def format_csv(values):
             month,
             year,
             values['authors'],
-            values['title'],
             "",
+            values['title'],
             values['abstract']
 ]
 
