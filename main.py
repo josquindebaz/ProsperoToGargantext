@@ -32,6 +32,7 @@ def format_csv(values):
             year,
             values['authors'],
             values['title'],
+            "",
             values['abstract']
 ]
 
