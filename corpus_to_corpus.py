@@ -1,6 +1,6 @@
 import csv
 import glob
-import os.path
+import os
 
 
 def get_values_from_files(txt_path, ctx_path):
@@ -58,17 +58,28 @@ def to_csv(lines, target_file):
             writer.writerow(line)
 
 
-if __name__ == "__main__":
-    dir_path = "test_streamlit/*.txt"
-    txts = glob.glob(dir_path)
-    lines = []
-    for txt_path in txts:
-        rac = os.path.splitext(txt_path)
-        ctx_path = rac[0] + '.ctx'
+def corpus_from_directory(target):
+    """
+    Create a Gargantext corpus from .txt and .ctx in target directory
+    """
+
+    txt_list = glob.glob(target + "/*.txt")
+    gargantex_lines = []
+
+    for txt_path in txt_list:
+        base_path = os.path.splitext(txt_path)
+        ctx_path = base_path[0] + '.ctx'
 
         if os.path.isfile(ctx_path):
             values = get_values_from_files(txt_path, ctx_path)
-            lines.append(format_csv(values))
-    if lines:
-        to_csv(lines,
-               target_file="samples/test_streamlit.csv")
+            gargantex_lines.append(format_csv(values))
+
+    if gargantex_lines:
+        to_csv(gargantex_lines,
+               target_file=os.path.join(target, "gargantext_from_prospero.csv"))
+
+
+if __name__ == "__main__":
+    dir_path = "samples"
+
+    corpus_from_directory(dir_path)
