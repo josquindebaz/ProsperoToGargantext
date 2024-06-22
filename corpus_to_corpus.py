@@ -1,6 +1,7 @@
+import csv
 import glob
 import os.path
-import csv
+
 
 def get_values_from_files(txt_path, ctx_path):
     with open(ctx_path, 'r') as buf_ctx:
@@ -32,10 +33,11 @@ def format_csv(values):
             month,
             year,
             values['authors'],
-            "",
+            values['source'],
             values['title'],
             values['abstract']
-]
+            ]
+
 
 def to_csv(lines, target_file):
     with open(target_file, "w", newline='') as csv_file:
