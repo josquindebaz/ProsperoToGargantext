@@ -71,4 +71,4 @@ if __name__ == "__main__":
             lines.append(format_csv(values))
     if lines:
         to_csv(lines,
-               target_file="test_streamlit.csv")
+               target_file="samples/test_streamlit.csv")
