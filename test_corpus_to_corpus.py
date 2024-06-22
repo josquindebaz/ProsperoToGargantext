@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from corpus_to_corpus import get_values_from_files, get_ctx_values, format_csv
+from corpus_to_corpus import get_values_from_files, extract_ctx_values, format_csv_line, txt_and_ctx, \
+    get_valid_txt_and_ctx_list
 
 
 class Test(TestCase):
@@ -35,12 +36,14 @@ class Test(TestCase):
                             'n\n',
                             '12:30:12']
 
-        result = get_ctx_values(ctx_lines_buffer)
+        result = extract_ctx_values(ctx_lines_buffer)
 
-        assert result == {'title': 'Posts de MichelF29015597', 'authors': 'MichelF29015597', 'date': '14/04/2022',
+        assert result == {'title': 'Posts de MichelF29015597',
+                          'authors': 'MichelF29015597',
+                          'date': '14/04/2022',
                           'source': 'X/Twitter'}
 
-    def test_format_csv(self):
+    def test_format_csv_line(self):
         values = {'title': 'Posts de MichelF29015597',
                   'authors': 'MichelF29015597',
                   'date': '14/04/2022',
@@ -55,6 +58,26 @@ class Test(TestCase):
                     'Posts de MichelF29015597',
                     'Vous je ne sais pas, mais moi, voir des jeunes de 18 ans manifester contre la retraite à 65 ou 64 ans,\nje me dis que la vie ne sera pas forcément facile pour eux.']
 
-        result = format_csv(values)
+        result = format_csv_line(values)
+
+        assert result == expected
+
+    def test_txt_and_ctx(self):
+        txt_path = "samples/TWIT22414A.txt"
+        ctx_path = "samples/TWIT22414A.ctx"
+        expected = [txt_path, ctx_path]
+
+        result = txt_and_ctx(txt_path)
+
+        assert result == expected
+
+        result = txt_and_ctx("missing_ctx.txt")
+        assert result is None
+
+    def test_get_valid_txt_and_ctx_list(self):
+        txt_list = ["samples/TWIT22414A.txt", "samples/TWIT22414MR.txt", "missing_ctx.txt"]
+        expected = [['samples/TWIT22414A.txt', 'samples/TWIT22414A.ctx'], ['samples/TWIT22414MR.txt', 'samples/TWIT22414MR.ctx']]
+
+        result = get_valid_txt_and_ctx_list(txt_list)
 
         assert result == expected
